@@ -1,0 +1,53 @@
+Model demo_orders {
+  type: 'table'
+  label: 'Orders'
+  description: ''
+  data_source_name: 'duckdb_demo'
+  dimension id {
+    label: 'Id'
+    type: 'number'
+    description: ""
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension status {
+    label: 'Status'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.status }};;
+  }
+  dimension created_at {
+    label: 'Created At'
+    type: 'datetime'
+    description: "This field represents the timestamp when the order was created. For example, orders were created at times such as 2024-02-09 12:08:48 or 2023-12-08 02:01:10. aaa"
+    hidden: false
+    definition: @sql {{ #SOURCE.created_at }};;
+  }
+  dimension user_id {
+    label: 'User Id'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.user_id }};;
+  }
+  dimension discount {
+    label: 'Discount'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.discount }};;
+  }
+  dimension delivery_attempts {
+    label: 'Delivery Attempts'
+    type: 'number'
+    description: "This field indicates the number of delivery attempts made for the order. For example, orders can have delivery attempts of 1, 2, or 3."
+    hidden: false
+    definition: @sql {{ #SOURCE.delivery_attempts }};;
+  }
+  measure value {
+    label: 'Value'
+    type: 'number'
+    definition: @sql 123 ;;
+  }
+
+  owner: 'scott.bui@holistics.io'
+  table_name: '"demo"."orders"'
+}

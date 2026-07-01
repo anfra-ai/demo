@@ -1,0 +1,6 @@
+explore {
+  measures {
+    count_users: count(demo_users.id),
+    count_orders: count(demo_orders.id),
+  }
+}

@@ -1,0 +1,5 @@
+data_sources:
+  duckdb_demo:
+    type: duckdb
+    connection:
+      path: data/demo_ecommerce.duckdb

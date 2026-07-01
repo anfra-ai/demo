@@ -1,0 +1,110 @@
+Dataset demo_ecommerce {
+  label: 'Demo Ecommerce'
+  description: ''
+  data_source_name: 'duckdb_demo'
+  models: [
+    demo_categories,
+    demo_cities,
+    demo_countries,
+    demo_merchants,
+    demo_order_items,
+    demo_orders,
+    demo_products,
+    demo_users
+  ]
+  relationships: [
+    relationship(demo_products.category_id > demo_categories.id, true),
+    relationship(demo_cities.country_code > demo_countries.code, true),
+    relationship(demo_orders.user_id > demo_users.id, true),
+    relationship(demo_order_items.order_id > demo_orders.id, true),
+    relationship(demo_order_items.product_id > demo_products.id, true),
+    relationship(demo_products.merchant_id > demo_merchants.id, true),
+    relationship(demo_users.city_id > demo_cities.id, true)
+  ]
+  metric revenue {
+    label: 'Revenue'
+    type: 'number'
+    description: 'Total revenue calculated as price multiplied by quantity.'
+    format: '[$€]#,###0.00'
+    definition: @aql sum(demo_order_items.quantity * demo_products.price);;
+  }
+
+  metric vl2 {
+    label: 'Order VL2'
+    type: 'number'
+    definition: @aql 123 ;;
+  }
+  metric cumulative_value {
+    label: "Cumulative Value"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql demo_orders.value | running_total(demo_orders.created_at);;
+  }
+  metric user_count {
+    label: "User Count"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql count(demo_users.id);;
+  }
+  metric user_count_growth {
+    label: "User Count Growth"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql user_count * 100.0
+/
+(user_count | previous(order: demo_users.sign_up_at | year()));;
+  }
+  // metric rate {
+  //   label: "Rate"
+  //   type: "number"
+  //   description: ""
+  //   definition: @aql user_count * 100.0 / previous_count;;
+  // }
+  metric previous_user_count {
+    label: "Previous User Count"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql count(demo_users.id) | relative_period(demo_users.sign_up_at, interval(-1 year));;
+  }
+  metric order_count {
+    label: "Order Count"
+    type: "number"
+    description: ""
+    definition: @aql count(demo_orders.id);;
+  }
+  metric order_count_growth {
+    label: "Order Count Growth"
+    type: "number"
+    description: ""
+    definition: @aql order_count * 100.0
+/
+(order_count | previous(order: demo_users.sign_up_at | year()));;
+  }
+  owner: 'scott.bui@holistics.io'
+  pre_aggregates: {
+    monthly_orders: PreAggregate {
+      dimension date {
+        for: ref('demo_orders', 'created_at')
+        time_granularity: 'month'
+      }
+      measure order_count {
+        for: ref('demo_orders', 'id')
+        aggregation_type: 'count'
+      }
+      persistence: FullPersistence {
+        schema: 'persisted'
+      }
+    }
+  }
+  dimension value_dim {
+    label: "Value Dim"
+    type: "number"
+    description: ""
+    definition: @aql demo_orders.value | dimensionalize(demo_orders.id);;
+    model: demo_orders
+  }
+}

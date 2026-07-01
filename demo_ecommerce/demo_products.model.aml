@@ -1,0 +1,50 @@
+Model demo_products {
+  type: 'table'
+  label: 'Products'
+  description: ''
+  data_source_name: 'duckdb_demo'
+  dimension id {
+    label: 'Id'
+    type: 'number'
+    description: "zxc"
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension category_id {
+    label: 'Category Id'
+    type: 'number'
+    description: "This field represents the identifier for the category to which the product belongs. Examples of category IDs include 7, 10, or 20."
+    hidden: false
+    definition: @sql {{ #SOURCE.category_id }};;
+  }
+  dimension name {
+    label: 'Name'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.name }};;
+  }
+  dimension merchant_id {
+    label: 'Merchant Id'
+    type: 'number'
+    description: "This field represents the unique identifier for the merchant selling the product. For example, merchants have IDs such as 199, 31, or 72."
+    hidden: false
+    definition: @sql {{ #SOURCE.merchant_id }};;
+  }
+  dimension price {
+    label: 'Price'
+    type: 'number'
+    description: "This field denotes the price of the product. Examples of prices include 13, 19, or 45."
+    hidden: false
+    definition: @sql {{ #SOURCE.price }};;
+  }
+  dimension created_at {
+    label: 'Created At'
+    type: 'datetime'
+    description: "This field captures the date and time when the product was created. Examples of creation timestamps include \"2023-06-09 00:13:18\" or \"2022-04-17 19:28:04\"."
+    hidden: false
+    definition: @sql {{ #SOURCE.created_at }};;
+  }
+
+  owner: 'scott.bui@holistics.io'
+  table_name: '"demo"."products"'
+}

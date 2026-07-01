@@ -1,0 +1,30 @@
+Model demo_cities {
+  type: 'table'
+  label: 'Cities'
+  description: ''
+  data_source_name: 'duckdb_demo'
+  dimension id {
+    label: 'Id'
+    type: 'number'
+    description: "This field stores a unique identifier for each city. For example, cities have IDs such as 1, 2, or 16."
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension name {
+    label: 'Name'
+    type: 'text'
+    description: "This field represents the name of the city. For example, city names include \"Frankfurt\", \"New York\", and \"Jakarta\"."
+    hidden: false
+    definition: @sql {{ #SOURCE.name }};;
+  }
+  dimension country_code {
+    label: 'Country Code'
+    type: 'text'
+    description: "This field indicates the country code associated with the city. Examples of country codes are \"US\", \"ID\", and \"VN\"."
+    hidden: false
+    definition: @sql {{ #SOURCE.country_code }};;
+  }
+
+  owner: 'scott.bui@holistics.io'
+  table_name: '"demo"."cities"'
+}

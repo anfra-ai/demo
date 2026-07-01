@@ -1,0 +1,30 @@
+Model demo_order_items {
+  type: 'table'
+  label: 'Order Items'
+  description: ''
+  data_source_name: 'duckdb_demo'
+  dimension order_id {
+    label: 'Order Id'
+    type: 'number'
+    description: "This field stores a unique identifier for each order. For example, orders have IDs such as 14311, 19926, or 19554."
+    hidden: false
+    definition: @sql {{ #SOURCE.order_id }};;
+  }
+  dimension product_id {
+    label: 'Product Id'
+    type: 'number'
+    description: "This field represents the unique identifier for each product. For example, products have IDs such as 1425, 1369, or 8086."
+    hidden: false
+    definition: @sql {{ #SOURCE.product_id }};;
+  }
+  dimension quantity {
+    label: 'Quantity'
+    type: 'number'
+    description: "This field indicates the quantity of products ordered. For example, typical quantities include values such as 1, 2, or 3."
+    hidden: false
+    definition: @sql {{ #SOURCE.quantity }};;
+  }
+
+  owner: 'scott.bui@holistics.io'
+  table_name: '"demo"."order_items"'
+}
