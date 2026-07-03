@@ -15,6 +15,18 @@ runs locally: no database server to stand up, no cloud credentials.
 relationships and metrics such as revenue and order/user counts. Its data ships as a
 committed DuckDB file, so the dataset works the moment you clone the repo.
 
+## Skills
+
+Agent skills for working with anfra — authoring AML and writing AQL against a repo like this one — live in [`anfra-ai/skills`](https://github.com/anfra-ai/skills).
+Install them through whatever skill mechanism your coding agent supports.
+
+For Claude Code, add the marketplace and install:
+
+```
+/plugin marketplace add anfra-ai/skills
+/plugin install <name>@anfra-skills
+```
+
 ## Usage
 
 Run commands from the repo root so relative data-source paths (e.g.
@@ -35,3 +47,14 @@ cat examples/queries/metrics.aql | anfra query --dataset demo_ecommerce
 ```
 
 Add `--generate` to print the compiled SQL instead of running it.
+
+### Optional: keep servers warm for faster commands
+
+Each `query` or `validate` call spins up its query sidecars from cold. If you're
+running several commands (or letting an agent drive), start a warm server once:
+
+```bash
+anfra serve
+```
+
+It keeps the sidecars alive and exposes a local endpoint that subsequent `anfra` CLI calls and agents reuse, so later commands skip cold-start and return noticeably faster. Check whether one is already running with `anfra status`.
