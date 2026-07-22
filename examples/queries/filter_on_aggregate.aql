@@ -1,0 +1,22 @@
+explore {
+  dimensions {
+    rows {
+      continent: demo_countries.continent_name,
+      country: demo_countries.name,
+    }
+    columns {
+      rollup((
+        order_year: demo_orders.created_at | year(),
+        order_quarter: demo_orders.created_at | quarter(),
+      )),
+    }
+  }
+  measures {
+    count_users: count(demo_users.id),
+    count_orders: count(demo_orders.id),
+  }
+  having {
+    count(demo_users.id) > 300
+  }
+}
+
