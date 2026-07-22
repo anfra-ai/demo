@@ -4,6 +4,26 @@ An **anfra** (Agentic Analytics Infrastructure) project — local-first, agent-f
 analytics defined as AML (datasets, models, metrics) and queried with AQL. Everything
 runs locally: no database server to stand up, no cloud credentials.
 
+## Install
+
+Install the `anfra` binary:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/holistics/anfra/main/install.sh | bash
+```
+
+The installer downloads the latest release for your platform, places the `anfra`
+binary in `~/.anfra/bin`, and prints the line to add it to your `PATH`.
+Supported platforms: linux (x64/arm64) and macOS (x64/arm64).
+
+You can configure the installer with environment variables:
+
+- `ANFRA_INSTALL_DIR` — install somewhere else (default: `~/.anfra/bin`)
+- `ANFRA_VERSION` — install a specific version, e.g. `0.1.0` (default: latest)
+
+Update an existing install with `anfra update` (or `anfra update --check` to check
+without installing).
+
 ## Datasets
 
 | Dataset | Backing data source | Data |
